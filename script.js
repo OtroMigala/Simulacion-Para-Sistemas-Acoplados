@@ -9,7 +9,7 @@ let l = 1;
 let k = 10;
 let k1 = 10;
 let k2 = 10;
-let I = 1; // momento de inercia
+let I = 1/12*m*l**2; // momento de inercia
 
 // Gráficas
 let graficaTheta;
@@ -432,7 +432,13 @@ function inicializarGraficas() {
                     position: 'bottom',
                     title: {
                         display: true,
-                        text: 'Tiempo (s)'
+                        text: 'Tiempo (s)',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
                     }
                 },
                 y: {
@@ -440,13 +446,27 @@ function inicializarGraficas() {
                     position: 'left',
                     title: {
                         display: true,
-                        text: 'Amplitud'
+                        text: 'Amplitud',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
                     }
                 }
             },
             plugins: {
                 legend: {
-                    position: 'top'
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
                 }
             }
         }
