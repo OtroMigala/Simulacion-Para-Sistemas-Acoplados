@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Acoplado - Simulación</title>
+    
+    <!-- MathJax para ecuaciones -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>Simulación de Sistema Acoplado</h1>
+        </header>
+
+        <!-- Sección de Parámetros -->
+        <section class="parametros-section">
+            <h2>Parámetros del Sistema</h2>
+            <div class="parametros-grid">
+                <div class="input-container">
+                    <label for="masa">Masa (kg):</label>
+                    <input type="number" id="masa" min="0.1" max="10" step="0.1" value="1">
+                </div>
+                <div class="input-container">
+                    <label for="longitud">Longitud (m):</label>
+                    <input type="number" id="longitud" min="0.1" max="5" step="0.1" value="1">
+                </div>
+                <div class="input-container">
+                    <label for="k">K (N/m):</label>
+                    <input type="number" id="k" min="1" max="100" step="1" value="10">
+                </div>
+                <div class="input-container">
+                    <label for="k1">K₁ (N/m):</label>
+                    <input type="number" id="k1" min="1" max="100" step="1" value="10">
+                </div>
+                <div class="input-container">
+                    <label for="k2">K₂ (N/m):</label>
+                    <input type="number" id="k2" min="1" max="100" step="1" value="10">
+                </div>
+            </div>
+            <button onclick="actualizarTodoElSistema()" class="update-button">Actualizar Sistema</button>
+        </section>
+
+        <!-- Sección de Ecuaciones -->
+        <section class="ecuaciones-section">
+            <h2>Ecuaciones del Sistema</h2>
+            
+            <!-- Lagrangiano -->
+            <div class="equation-box">
+                <h3>Lagrangiano</h3>
+                <div id="lagrangiano" class="math">
+                    <div class="ecuacion-general">
+                        \[L = \frac{1}{2}I\dot{\theta}^2 + \frac{1}{2}m\dot{x}^2 - \left[\frac{1}{2}k\left(\frac{l}{2}\theta\right)^2 + \frac{1}{2}k_1\left(\frac{l}{2}\theta + x\right)^2 + \frac{1}{2}k_2x^2 + mgx\right]\]
+                    </div>
+                    <div class="valores-actuales">
+                        <!-- Se actualizará mediante JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ecuaciones de Movimiento -->
+            <div class="equation-box">
+                <h3>Ecuaciones de Movimiento</h3>
+                <div id="ecuacionesMovimiento" class="math">
+                    <h4>Ecuaciones Diferenciales</h4>
+                    <div class="ecuacion-general">
+                        \[I\ddot{\theta} + \frac{kl^2}{4}\theta + \frac{k_1l^2}{4}\theta + \frac{k_1l}{2}x = 0\]
+                        \[m\ddot{x} + \frac{k_1l}{2}\theta + (k_1 + k_2)x + mg = 0\]
+                    </div>
+                    <div class="valores-actuales">
+                        <!-- Se actualizará mediante JavaScript -->
+                    </div>
+                    
+                    <h4>Soluciones Armónicas</h4>
+                    <div class="ecuacion-general">
+                        \[\theta(t) = A\cos(\omega t)\]
+                        \[x(t) = B\cos(\omega t)\]
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Frecuencias Naturales -->
+            <div class="equation-box">
+                <h3>Frecuencias Naturales</h3>
+                <div id="frecuenciasNaturales" class="math">
+                    <div class="ecuacion-general">
+                            
+                        </div>
+                    <div class="valores-actuales">
+                        <!-- Se actualizará mediante JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Relaciones de Amplitud -->
+            <div class="equation-box">
+                <h3>Relaciones de Amplitud</h3>
+                <div id="relacionesAmplitud" class="math">
+                    <div class="valores-actuales">
+                        <!-- Se actualizará mediante JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Simulación -->
+        <section class="simulacion-section">
+            <h2>Modos de Vibración</h2>
+            <!-- Controles de la simulación -->
+            <div class="controles-simulacion">
+                <div class="modo-buttons">
+                    <button onclick="simularModo(1)">Modo 1</button>
+                    <button onclick="simularModo(2)">Modo 2</button>
+                    <button onclick="simularGeneral()">Solución General</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="toggleSimulacion">Pausar/Reanudar</button>
+                    <button id="reiniciarSimulacion">Reiniciar</button>
+                </div>
+            </div>
+
+            <!-- Gráficas -->
+            <div class="graficas-container">
+                <div class="grafica-wrapper">
+                    <h3>Ángulo θ vs. Tiempo</h3>
+                    <canvas id="graficaTheta"></canvas>
+                </div>
+                <div class="grafica-wrapper">
+                    <h3>Posición x vs. Tiempo</h3>
+                    <canvas id="graficaX"></canvas>
+                </div>
+            </div>
+
+            <!-- Visualización del Sistema -->
+            <div class="visualizacion-section">
+                <h3>Visualización del Sistema</h3>
+                <div class="visualizacion-container">
+                    <canvas id="simulacion"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contenedor para mensajes de estado -->
+    <div id="mensaje-container" class="mensaje-container"></div>
+
+    <!-- Scripts -->
+    <script>
+        // Asegurarse de que MathJax se recargue cuando se actualicen las ecuaciones
+        function actualizarMathjax() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
